@@ -5,6 +5,10 @@
  */
 package view;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Luis Gustavo
@@ -87,6 +91,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         miSair.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         miSair.setMnemonic('s');
         miSair.setText("Sair");
+        miSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miSairActionPerformed(evt);
+            }
+        });
         mOperacoes.add(miSair);
 
         jMenuBar1.add(mOperacoes);
@@ -98,6 +107,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         miSobre.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         miSobre.setMnemonic('s');
         miSobre.setText("Sobre");
+        miSobre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miSobreActionPerformed(evt);
+            }
+        });
         mAjuda.add(miSobre);
 
         jMenuBar1.add(mAjuda);
@@ -111,6 +125,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         this.setExtendedState(MAXIMIZED_BOTH);
     }//GEN-LAST:event_formWindowOpened
+
+    private void miSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miSairActionPerformed
+        int opcao = JOptionPane.showConfirmDialog(null, "Deseja realmente sair?", "Atenção!",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if(opcao == JOptionPane.YES_OPTION){
+            System.exit(0);
+        }
+    }//GEN-LAST:event_miSairActionPerformed
+
+    private void miSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miSobreActionPerformed
+        String nome = "Luís Gustavo da Cunha Cipriani";
+        Date dataAtual = new Date();
+        SimpleDateFormat fm = new SimpleDateFormat("dd/MM/yyyy");
+        JOptionPane.showMessageDialog(null, nome + "\n" + fm.format(dataAtual));
+    }//GEN-LAST:event_miSobreActionPerformed
 
     /**
      * @param args the command line arguments
