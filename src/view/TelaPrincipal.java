@@ -1,10 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package view;
 
+import dao.QuartoDao;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -15,11 +12,11 @@ import javax.swing.JOptionPane;
  */
 public class TelaPrincipal extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TelaPrincipal
-     */
+    public static QuartoDao dao;
+    
     public TelaPrincipal() {
         initComponents();
+        dao = new QuartoDao();
     }
 
     /**
@@ -75,11 +72,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
         miQuartos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         miQuartos.setMnemonic('q');
         miQuartos.setText("Quartos");
+        miQuartos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miQuartosActionPerformed(evt);
+            }
+        });
         mOperacoes.add(miQuartos);
 
         miLocacoes.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         miLocacoes.setMnemonic('l');
         miLocacoes.setText("Locações");
+        miLocacoes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miLocacoesActionPerformed(evt);
+            }
+        });
         mOperacoes.add(miLocacoes);
 
         miListagem.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -140,6 +147,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
         SimpleDateFormat fm = new SimpleDateFormat("dd/MM/yyyy");
         JOptionPane.showMessageDialog(null, nome + "\n" + fm.format(dataAtual));
     }//GEN-LAST:event_miSobreActionPerformed
+
+    private void miQuartosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miQuartosActionPerformed
+        new TelaQuartos().setVisible(true);
+    }//GEN-LAST:event_miQuartosActionPerformed
+
+    private void miLocacoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miLocacoesActionPerformed
+        new TelaLocacao().setVisible(true);
+    }//GEN-LAST:event_miLocacoesActionPerformed
 
     /**
      * @param args the command line arguments

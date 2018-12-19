@@ -1,8 +1,16 @@
 
 package view;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import model.Cliente;
+import model.Quarto;
 
 /**
  *
@@ -12,6 +20,9 @@ public class TelaLocacao extends javax.swing.JFrame {
 
     Cliente cliente;
     DefaultComboBoxModel combo;
+    List<Quarto> lista;
+    Quarto quarto;
+    SimpleDateFormat fm = new SimpleDateFormat("dd/MM/yyyy");
     
     public TelaLocacao() {
         initComponents();
@@ -40,10 +51,10 @@ public class TelaLocacao extends javax.swing.JFrame {
         btLimpar = new javax.swing.JButton();
         btSair = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        lbQuartosDisponiveis = new javax.swing.JLabel();
-        cbQuartosDisponiveis = new javax.swing.JComboBox<>();
-        lbQuartoSelecionado = new javax.swing.JLabel();
-        cbQuartoSelecionado = new javax.swing.JComboBox<>();
+        lbTiposDisponiveis = new javax.swing.JLabel();
+        cbTiposDisponiveis = new javax.swing.JComboBox<>();
+        lbNumerosDisponiveis = new javax.swing.JLabel();
+        cbNumerosDisponiveis = new javax.swing.JComboBox<>();
         lbDataLocacao = new javax.swing.JLabel();
         tfDataLocacao = new javax.swing.JFormattedTextField();
         lbDiasLocados = new javax.swing.JLabel();
@@ -51,6 +62,8 @@ public class TelaLocacao extends javax.swing.JFrame {
         lbDataSaida = new javax.swing.JLabel();
         tfDataSaida = new javax.swing.JFormattedTextField();
         btLocar = new javax.swing.JButton();
+        lbValorLocacao = new javax.swing.JLabel();
+        tfValorLocacao = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Locação");
@@ -70,11 +83,6 @@ public class TelaLocacao extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        tfCPF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfCPFActionPerformed(evt);
-            }
-        });
 
         lbNome.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lbNome.setText("Nome:");
@@ -166,11 +174,24 @@ public class TelaLocacao extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        lbQuartosDisponiveis.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lbQuartosDisponiveis.setText("Quartos Disponíveis");
+        lbTiposDisponiveis.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lbTiposDisponiveis.setText("Tipos Disponíveis");
 
-        lbQuartoSelecionado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lbQuartoSelecionado.setText("Quarto Selecionado");
+        cbTiposDisponiveis.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fumante", "Não Fumante", "Premium", "Flat" }));
+        cbTiposDisponiveis.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbTiposDisponiveisMouseClicked(evt);
+            }
+        });
+
+        lbNumerosDisponiveis.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lbNumerosDisponiveis.setText("Números Disponíveis");
+
+        cbNumerosDisponiveis.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbNumerosDisponiveisMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -179,12 +200,12 @@ public class TelaLocacao extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lbQuartosDisponiveis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cbQuartosDisponiveis, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
+                    .addComponent(lbTiposDisponiveis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbTiposDisponiveis, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lbQuartoSelecionado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cbQuartoSelecionado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lbNumerosDisponiveis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbNumerosDisponiveis, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -192,12 +213,12 @@ public class TelaLocacao extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbQuartosDisponiveis)
-                    .addComponent(lbQuartoSelecionado))
+                    .addComponent(lbTiposDisponiveis)
+                    .addComponent(lbNumerosDisponiveis))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbQuartosDisponiveis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbQuartoSelecionado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbTiposDisponiveis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbNumerosDisponiveis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -209,14 +230,20 @@ public class TelaLocacao extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        tfDataLocacao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfDataLocacaoActionPerformed(evt);
+        tfDataLocacao.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                tfDataLocacaoMouseExited(evt);
             }
         });
 
         lbDiasLocados.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lbDiasLocados.setText("Dias Locados:");
+
+        tfDiasLocados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                tfDiasLocadosMouseExited(evt);
+            }
+        });
 
         lbDataSaida.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lbDataSaida.setText("Data de Saída:");
@@ -232,6 +259,14 @@ public class TelaLocacao extends javax.swing.JFrame {
         btLocar.setText("Locar");
         btLocar.setMaximumSize(new java.awt.Dimension(123, 39));
         btLocar.setPreferredSize(new java.awt.Dimension(123, 39));
+        btLocar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btLocarActionPerformed(evt);
+            }
+        });
+
+        lbValorLocacao.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lbValorLocacao.setText("Valor da Locação:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -239,13 +274,13 @@ public class TelaLocacao extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btCadastrar, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btCadastrar, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(tfDataLocacao, javax.swing.GroupLayout.Alignment.LEADING)
@@ -257,15 +292,16 @@ public class TelaLocacao extends javax.swing.JFrame {
                                 .addGap(72, 72, 72)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(lbDataSaida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(tfDataSaida))))
-                        .addGap(23, 23, 23))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(tfDataSaida)))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(tfValorLocacao, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lbValorLocacao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btLocar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -287,23 +323,23 @@ public class TelaLocacao extends javax.swing.JFrame {
                     .addComponent(tfDataLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfDiasLocados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfDataSaida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lbValorLocacao)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tfValorLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btLocar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btLocar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btSair, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        setSize(new java.awt.Dimension(420, 474));
+        setSize(new java.awt.Dimension(420, 527));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void tfCPFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfCPFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfCPFActionPerformed
 
     private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
         this.dispose();
@@ -314,17 +350,13 @@ public class TelaLocacao extends javax.swing.JFrame {
         tfNome.setText("");
         tfEndereco.setText("");
         tfRenda.setText("");
-        cbQuartosDisponiveis.removeAllItems();
-        cbQuartoSelecionado.removeAllItems();
+        cbNumerosDisponiveis.removeAllItems();
         tfDataLocacao.setValue("");
         tfDiasLocados.setText("");
         tfDataSaida.setValue("");
+        tfValorLocacao.setText("");
         tfCPF.requestFocus();
     }//GEN-LAST:event_btLimparActionPerformed
-
-    private void tfDataLocacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfDataLocacaoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfDataLocacaoActionPerformed
 
     private void btCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastrarActionPerformed
         String cpf = tfCPF.getText();
@@ -332,13 +364,91 @@ public class TelaLocacao extends javax.swing.JFrame {
         String endereco = tfEndereco.getText();
         double renda = Double.parseDouble(tfRenda.getText());
         cliente = new Cliente(cpf, nome, endereco, renda);
-        
-        
+        JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso!", "Concluído!",
+        JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btCadastrarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void cbTiposDisponiveisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbTiposDisponiveisMouseClicked
+        cbNumerosDisponiveis.removeAllItems();
+        combo = (DefaultComboBoxModel) cbNumerosDisponiveis.getModel();
+        String tipo = cbTiposDisponiveis.getSelectedItem().toString();
+        lista = TelaPrincipal.dao.listaQuartos();
+        for(Quarto q : lista){
+            if(q.getTipo().equals(tipo)){
+                combo.addElement(q.getNumero());
+            }
+        }
+        cbNumerosDisponiveis.setModel(combo);
+    }//GEN-LAST:event_cbTiposDisponiveisMouseClicked
+
+    private void cbNumerosDisponiveisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbNumerosDisponiveisMouseClicked
+        tfDataLocacao.setValue("");
+        int numero = Integer.parseInt(cbNumerosDisponiveis.getSelectedItem().toString());
+        
+        for(Quarto q : lista){
+            if(q.getNumero() == numero){
+                tfDataLocacao.setText(fm.format(q.getDataLocacao().getTime()));
+                tfDiasLocados.setText(Integer.toString(q.getDiasLocados()));             
+                tfDataSaida.setText(fm.format(retornaData(q.getDataLocacao(), numero).getTime()));
+                tfValorLocacao.setText(Double.toString(q.calculaValor()));
+                quarto = q;
+            }
+        }
+    }//GEN-LAST:event_cbNumerosDisponiveisMouseClicked
+
+    private void btLocarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLocarActionPerformed
+        int opcao = JOptionPane.showConfirmDialog(null, "Deseja finalizar a locação?", "Atenção!",
+        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int numero = Integer.parseInt(cbNumerosDisponiveis.getSelectedItem().toString());
+        if(opcao == JOptionPane.YES_OPTION){
+            preencheQuarto();
+            JOptionPane.showMessageDialog(null, "Locação finalizada com sucesso!", "Concluído!",
+            JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btLocarActionPerformed
+
+    private void tfDataLocacaoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfDataLocacaoMouseExited
+        preencheSaida();
+        preencheQuarto();
+        tfValorLocacao.setText(Double.toString(quarto.calculaValor()));
+    }//GEN-LAST:event_tfDataLocacaoMouseExited
+
+    private void tfDiasLocadosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfDiasLocadosMouseExited
+        preencheSaida();
+        preencheQuarto();
+        tfValorLocacao.setText(Double.toString(quarto.calculaValor()));
+    }//GEN-LAST:event_tfDiasLocadosMouseExited
+    
+    private Calendar retornaData(Calendar data, int dias){
+        Calendar saida = Calendar.getInstance();
+        saida.setTime(data.getTime());
+        saida.add(Calendar.DATE, + dias);
+        return saida;
+    }
+    
+    private void preencheSaida(){
+        Calendar dataLocacao = Calendar.getInstance();
+        int numero = Integer.parseInt(tfDiasLocados.getText());
+        try {
+            dataLocacao.setTime(fm.parse(tfDataLocacao.getText()));
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaLocacao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        tfDataSaida.setText(fm.format(retornaData(dataLocacao, numero).getTime()));
+    }
+    
+    private void preencheQuarto(){
+        quarto.setCliente(cliente);
+        Calendar dataLocacao = Calendar.getInstance();
+        try {
+            dataLocacao.setTime(fm.parse(tfDataLocacao.getText()));
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaLocacao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        quarto.setDataLocacao(dataLocacao);
+        quarto.setDiasLocados(Integer.parseInt(tfDiasLocados.getText()));
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -376,8 +486,8 @@ public class TelaLocacao extends javax.swing.JFrame {
     private javax.swing.JButton btLimpar;
     private javax.swing.JButton btLocar;
     private javax.swing.JButton btSair;
-    private javax.swing.JComboBox<String> cbQuartoSelecionado;
-    private javax.swing.JComboBox<String> cbQuartosDisponiveis;
+    private javax.swing.JComboBox<String> cbNumerosDisponiveis;
+    private javax.swing.JComboBox<String> cbTiposDisponiveis;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -387,9 +497,10 @@ public class TelaLocacao extends javax.swing.JFrame {
     private javax.swing.JLabel lbDiasLocados;
     private javax.swing.JLabel lbEndereco;
     private javax.swing.JLabel lbNome;
-    private javax.swing.JLabel lbQuartoSelecionado;
-    private javax.swing.JLabel lbQuartosDisponiveis;
+    private javax.swing.JLabel lbNumerosDisponiveis;
     private javax.swing.JLabel lbRenda;
+    private javax.swing.JLabel lbTiposDisponiveis;
+    private javax.swing.JLabel lbValorLocacao;
     private javax.swing.JFormattedTextField tfCPF;
     private javax.swing.JFormattedTextField tfDataLocacao;
     private javax.swing.JFormattedTextField tfDataSaida;
@@ -397,5 +508,6 @@ public class TelaLocacao extends javax.swing.JFrame {
     private javax.swing.JTextField tfEndereco;
     private javax.swing.JTextField tfNome;
     private javax.swing.JTextField tfRenda;
+    private javax.swing.JTextField tfValorLocacao;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,8 +1,16 @@
 
 package view;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import model.Quarto;
 
 /**
  *
@@ -75,7 +83,6 @@ public class TelaQuartos extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        tfDataLocacao.setText("  /  /    ");
 
         lbDiasLocados.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lbDiasLocados.setText("Dias Locados:");
@@ -177,6 +184,11 @@ public class TelaQuartos extends javax.swing.JFrame {
         btCadastrar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/cadastrar.png"))); // NOI18N
         btCadastrar.setText("Cadastrar");
+        btCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCadastrarActionPerformed(evt);
+            }
+        });
 
         btLimpar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/limpar.png"))); // NOI18N
@@ -253,10 +265,52 @@ public class TelaQuartos extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btSairActionPerformed
 
+    private void btCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastrarActionPerformed
+        int numero = Integer.parseInt(tfNumero.getText());
+        double valorDiaria = Double.parseDouble(tfValorDiaria.getText());
+        SimpleDateFormat fm = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar dataLocacao = Calendar.getInstance();
+        try {
+            dataLocacao.setTime(fm.parse(tfDataLocacao.getText()));
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaQuartos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        int diasLocados = Integer.parseInt(tfDiasLocados.getText());
+        Quarto quarto = new Quarto(numero, capturarRadio(), valorDiaria, null, dataLocacao, diasLocados);
+        TelaPrincipal.dao.adicionaQuarto(quarto);
+        JOptionPane.showMessageDialog(null, "Quarto cadastrado com sucesso!", "Concluído!",
+        JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_btCadastrarActionPerformed
+
     private void preencheData(){
         Date dataAtual = new Date();
         SimpleDateFormat fm = new SimpleDateFormat("dd/MM/yyyy");
         tfDataLocacao.setText(fm.format(dataAtual));
+    }
+    
+    private String capturarRadio(){
+        JRadioButton radio;
+        String str = null;
+        Enumeration jr = grTipo.getElements();
+        while ( jr.hasMoreElements() )
+        {
+            radio = (JRadioButton) jr.nextElement();
+            if (radio.isSelected())
+            {
+                str = radio.getText();
+            }
+        }
+        return str;
+    }
+    
+    private void marcarRadio(String str){
+        JRadioButton radio;
+        Enumeration jr = grTipo.getElements();
+        while ( jr.hasMoreElements() ) {
+            radio = (JRadioButton) jr.nextElement();
+            if (radio.getText().equals(str))
+                radio.setSelected(true);
+        }
     }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
