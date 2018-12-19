@@ -4,6 +4,7 @@ package view;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -68,6 +69,11 @@ public class TelaLocacao extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Locação");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
@@ -178,6 +184,7 @@ public class TelaLocacao extends javax.swing.JFrame {
         lbTiposDisponiveis.setText("Tipos Disponíveis");
 
         cbTiposDisponiveis.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fumante", "Não Fumante", "Premium", "Flat" }));
+        cbTiposDisponiveis.setEnabled(false);
         cbTiposDisponiveis.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 cbTiposDisponiveisMouseClicked(evt);
@@ -187,6 +194,7 @@ public class TelaLocacao extends javax.swing.JFrame {
         lbNumerosDisponiveis.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lbNumerosDisponiveis.setText("Números Disponíveis");
 
+        cbNumerosDisponiveis.setEnabled(false);
         cbNumerosDisponiveis.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 cbNumerosDisponiveisMouseClicked(evt);
@@ -230,6 +238,7 @@ public class TelaLocacao extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        tfDataLocacao.setEnabled(false);
         tfDataLocacao.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 tfDataLocacaoMouseExited(evt);
@@ -239,6 +248,7 @@ public class TelaLocacao extends javax.swing.JFrame {
         lbDiasLocados.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lbDiasLocados.setText("Dias Locados:");
 
+        tfDiasLocados.setEnabled(false);
         tfDiasLocados.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 tfDiasLocadosMouseExited(evt);
@@ -253,10 +263,12 @@ public class TelaLocacao extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        tfDataSaida.setEnabled(false);
 
         btLocar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btLocar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/locar.png"))); // NOI18N
         btLocar.setText("Locar");
+        btLocar.setEnabled(false);
         btLocar.setMaximumSize(new java.awt.Dimension(123, 39));
         btLocar.setPreferredSize(new java.awt.Dimension(123, 39));
         btLocar.addActionListener(new java.awt.event.ActionListener() {
@@ -267,6 +279,8 @@ public class TelaLocacao extends javax.swing.JFrame {
 
         lbValorLocacao.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lbValorLocacao.setText("Valor da Locação:");
+
+        tfValorLocacao.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -346,16 +360,7 @@ public class TelaLocacao extends javax.swing.JFrame {
     }//GEN-LAST:event_btSairActionPerformed
 
     private void btLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLimparActionPerformed
-        tfCPF.setValue("");
-        tfNome.setText("");
-        tfEndereco.setText("");
-        tfRenda.setText("");
-        cbNumerosDisponiveis.removeAllItems();
-        tfDataLocacao.setValue("");
-        tfDiasLocados.setText("");
-        tfDataSaida.setValue("");
-        tfValorLocacao.setText("");
-        tfCPF.requestFocus();
+        limpar();
     }//GEN-LAST:event_btLimparActionPerformed
 
     private void btCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastrarActionPerformed
@@ -366,6 +371,7 @@ public class TelaLocacao extends javax.swing.JFrame {
         cliente = new Cliente(cpf, nome, endereco, renda);
         JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso!", "Concluído!",
         JOptionPane.INFORMATION_MESSAGE);
+        habilitar();
     }//GEN-LAST:event_btCadastrarActionPerformed
 
     private void cbTiposDisponiveisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbTiposDisponiveisMouseClicked
@@ -404,6 +410,7 @@ public class TelaLocacao extends javax.swing.JFrame {
             preencheQuarto();
             JOptionPane.showMessageDialog(null, "Locação finalizada com sucesso!", "Concluído!",
             JOptionPane.INFORMATION_MESSAGE);
+            limpar();
         }
     }//GEN-LAST:event_btLocarActionPerformed
 
@@ -418,6 +425,10 @@ public class TelaLocacao extends javax.swing.JFrame {
         preencheQuarto();
         tfValorLocacao.setText(Double.toString(quarto.calculaValor()));
     }//GEN-LAST:event_tfDiasLocadosMouseExited
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        limpar();
+    }//GEN-LAST:event_formWindowOpened
     
     private Calendar retornaData(Calendar data, int dias){
         Calendar saida = Calendar.getInstance();
@@ -449,6 +460,46 @@ public class TelaLocacao extends javax.swing.JFrame {
         quarto.setDiasLocados(Integer.parseInt(tfDiasLocados.getText()));
     }
     
+    private void habilitar(){
+        tfCPF.setEnabled(false);
+        tfNome.setEnabled(false);
+        tfEndereco.setEnabled(false);
+        tfRenda.setEnabled(false);
+        btCadastrar.setEnabled(false);
+        cbTiposDisponiveis.setEnabled(true);
+        cbNumerosDisponiveis.setEnabled(true);
+        tfDataLocacao.setEnabled(true);
+        tfDiasLocados.setEnabled(true);
+        tfDataSaida.setEnabled(true);
+        tfValorLocacao.setEnabled(true);
+        btLocar.setEnabled(true);
+    }
+    
+    private void limpar(){
+        tfCPF.setValue("");
+        tfNome.setText("");
+        tfEndereco.setText("");
+        tfRenda.setText("");
+        cbNumerosDisponiveis.removeAllItems();
+        tfDiasLocados.setText("0");
+        tfDataLocacao.setText(fm.format(new Date()));
+        tfDataSaida.setText(fm.format(new Date()));
+        tfValorLocacao.setText("0.0");
+        tfCPF.requestFocus();
+        tfCPF.setEnabled(true);
+        tfNome.setEnabled(true);
+        tfEndereco.setEnabled(true);
+        tfRenda.setEnabled(true);
+        btCadastrar.setEnabled(true);
+        cbTiposDisponiveis.setEnabled(false);
+        cbNumerosDisponiveis.setEnabled(false);
+        tfDataLocacao.setEnabled(false);
+        tfDiasLocados.setEnabled(false);
+        tfDataSaida.setEnabled(false);
+        tfValorLocacao.setEnabled(false);
+        btLocar.setEnabled(false);
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -471,6 +522,9 @@ public class TelaLocacao extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(TelaLocacao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
