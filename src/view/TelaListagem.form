@@ -179,6 +179,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imagens/buscar.png"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="98"/>
                 <Property name="text" type="java.lang.String" value="Buscar"/>
               </Properties>
               <Events>
@@ -260,6 +261,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/imagens/sair.png"/>
             </Property>
+            <Property name="mnemonic" type="int" value="115"/>
             <Property name="text" type="java.lang.String" value="Sair"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[105, 39]"/>
@@ -280,6 +282,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/imagens/limpar.png"/>
             </Property>
+            <Property name="mnemonic" type="int" value="108"/>
             <Property name="text" type="java.lang.String" value="Limpar"/>
           </Properties>
           <Events>

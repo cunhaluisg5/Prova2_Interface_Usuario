@@ -150,6 +150,7 @@ public class TelaLocacao extends javax.swing.JFrame {
 
         btCadastrar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/cadastrar.png"))); // NOI18N
+        btCadastrar.setMnemonic('c');
         btCadastrar.setText("Cadastrar");
         btCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -159,6 +160,7 @@ public class TelaLocacao extends javax.swing.JFrame {
 
         btLimpar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/limpar.png"))); // NOI18N
+        btLimpar.setMnemonic('i');
         btLimpar.setText("Limpar");
         btLimpar.setMaximumSize(new java.awt.Dimension(123, 39));
         btLimpar.setPreferredSize(new java.awt.Dimension(123, 39));
@@ -170,6 +172,7 @@ public class TelaLocacao extends javax.swing.JFrame {
 
         btSair.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/sair.png"))); // NOI18N
+        btSair.setMnemonic('s');
         btSair.setText("Sair");
         btSair.setMaximumSize(new java.awt.Dimension(123, 39));
         btSair.setPreferredSize(new java.awt.Dimension(123, 39));
@@ -269,6 +272,7 @@ public class TelaLocacao extends javax.swing.JFrame {
 
         btLocar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btLocar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/locar.png"))); // NOI18N
+        btLocar.setMnemonic('l');
         btLocar.setText("Locar");
         btLocar.setEnabled(false);
         btLocar.setMaximumSize(new java.awt.Dimension(123, 39));
