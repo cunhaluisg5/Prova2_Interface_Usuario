@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import model.Cliente;
 import model.Quarto;
 
 /**
@@ -277,7 +278,9 @@ public class TelaQuartos extends javax.swing.JFrame {
                 Logger.getLogger(TelaQuartos.class.getName()).log(Level.SEVERE, null, ex);
             }
             int diasLocados = Integer.parseInt(tfDiasLocados.getText());
-            Quarto quarto = new Quarto(numero, capturarRadio(), valorDiaria, null, dataLocacao, diasLocados);
+            Cliente cliente = new Cliente(null, null, null, 0);
+            Quarto quarto = new Quarto(numero, capturarRadio(), valorDiaria, cliente, dataLocacao, 
+            diasLocados);
             TelaPrincipal.dao.adicionaQuarto(quarto);
             JOptionPane.showMessageDialog(null, "Quarto cadastrado com sucesso!", "Concluído!",
             JOptionPane.INFORMATION_MESSAGE);

@@ -92,6 +92,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         miListagem.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         miListagem.setMnemonic('i');
         miListagem.setText("Listagem");
+        miListagem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miListagemActionPerformed(evt);
+            }
+        });
         mOperacoes.add(miListagem);
         mOperacoes.add(jSeparator1);
 
@@ -155,6 +160,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void miLocacoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miLocacoesActionPerformed
         new TelaLocacao().setVisible(true);
     }//GEN-LAST:event_miLocacoesActionPerformed
+
+    private void miListagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miListagemActionPerformed
+        new TelaListagem().setVisible(true);
+    }//GEN-LAST:event_miListagemActionPerformed
 
     /**
      * @param args the command line arguments
