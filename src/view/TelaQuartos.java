@@ -266,20 +266,25 @@ public class TelaQuartos extends javax.swing.JFrame {
     }//GEN-LAST:event_btSairActionPerformed
 
     private void btCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastrarActionPerformed
-        int numero = Integer.parseInt(tfNumero.getText());
-        double valorDiaria = Double.parseDouble(tfValorDiaria.getText());
-        SimpleDateFormat fm = new SimpleDateFormat("dd/MM/yyyy");
-        Calendar dataLocacao = Calendar.getInstance();
-        try {
-            dataLocacao.setTime(fm.parse(tfDataLocacao.getText()));
-        } catch (ParseException ex) {
-            Logger.getLogger(TelaQuartos.class.getName()).log(Level.SEVERE, null, ex);
+        try{
+            int numero = Integer.parseInt(tfNumero.getText());
+            double valorDiaria = Double.parseDouble(tfValorDiaria.getText());
+            SimpleDateFormat fm = new SimpleDateFormat("dd/MM/yyyy");
+            Calendar dataLocacao = Calendar.getInstance();
+            try {
+                dataLocacao.setTime(fm.parse(tfDataLocacao.getText()));
+            }catch (ParseException ex) {
+                Logger.getLogger(TelaQuartos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            int diasLocados = Integer.parseInt(tfDiasLocados.getText());
+            Quarto quarto = new Quarto(numero, capturarRadio(), valorDiaria, null, dataLocacao, diasLocados);
+            TelaPrincipal.dao.adicionaQuarto(quarto);
+            JOptionPane.showMessageDialog(null, "Quarto cadastrado com sucesso!", "Concluído!",
+            JOptionPane.INFORMATION_MESSAGE);
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos!", "Atenção!",
+            JOptionPane.ERROR_MESSAGE);
         }
-        int diasLocados = Integer.parseInt(tfDiasLocados.getText());
-        Quarto quarto = new Quarto(numero, capturarRadio(), valorDiaria, null, dataLocacao, diasLocados);
-        TelaPrincipal.dao.adicionaQuarto(quarto);
-        JOptionPane.showMessageDialog(null, "Quarto cadastrado com sucesso!", "Concluído!",
-        JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btCadastrarActionPerformed
 
     private void preencheData(){

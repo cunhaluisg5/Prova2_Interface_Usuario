@@ -3,6 +3,7 @@ package view;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +28,7 @@ public class TelaLocacao extends javax.swing.JFrame {
     
     public TelaLocacao() {
         initComponents();
+        lista = TelaPrincipal.dao.listaQuartos();
     }
 
     /**
@@ -364,21 +366,30 @@ public class TelaLocacao extends javax.swing.JFrame {
     }//GEN-LAST:event_btLimparActionPerformed
 
     private void btCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastrarActionPerformed
-        String cpf = tfCPF.getText();
-        String nome = tfNome.getText();
-        String endereco = tfEndereco.getText();
-        double renda = Double.parseDouble(tfRenda.getText());
-        cliente = new Cliente(cpf, nome, endereco, renda);
-        JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso!", "Concluído!",
-        JOptionPane.INFORMATION_MESSAGE);
-        habilitar();
+        try{
+            String cpf = tfCPF.getText();
+            String nome = tfNome.getText();
+            String endereco = tfEndereco.getText();
+            double renda = Double.parseDouble(tfRenda.getText());
+            cliente = new Cliente(cpf, nome, endereco, renda);
+            JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso!", "Concluído!",
+            JOptionPane.INFORMATION_MESSAGE);
+            if(lista.size() > 0){
+                habilitar();
+            }else{
+                JOptionPane.showMessageDialog(null, "Para continuar, cadastre pelo menos um quarto "
+                + "primeiro!", "Atenção!", JOptionPane.WARNING_MESSAGE);
+            }
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos!", "Atenção!",
+            JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btCadastrarActionPerformed
 
     private void cbTiposDisponiveisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbTiposDisponiveisMouseClicked
         cbNumerosDisponiveis.removeAllItems();
         combo = (DefaultComboBoxModel) cbNumerosDisponiveis.getModel();
         String tipo = cbTiposDisponiveis.getSelectedItem().toString();
-        lista = TelaPrincipal.dao.listaQuartos();
         for(Quarto q : lista){
             if(q.getTipo().equals(tipo)){
                 combo.addElement(q.getNumero());
@@ -403,27 +414,36 @@ public class TelaLocacao extends javax.swing.JFrame {
     }//GEN-LAST:event_cbNumerosDisponiveisMouseClicked
 
     private void btLocarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLocarActionPerformed
-        int opcao = JOptionPane.showConfirmDialog(null, "Deseja finalizar a locação?", "Atenção!",
-        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        int numero = Integer.parseInt(cbNumerosDisponiveis.getSelectedItem().toString());
-        if(opcao == JOptionPane.YES_OPTION){
-            preencheQuarto();
-            JOptionPane.showMessageDialog(null, "Locação finalizada com sucesso!", "Concluído!",
-            JOptionPane.INFORMATION_MESSAGE);
-            limpar();
+        try{
+            int opcao = JOptionPane.showConfirmDialog(null, "Deseja finalizar a locação?", "Atenção!",
+            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            int numero = Integer.parseInt(cbNumerosDisponiveis.getSelectedItem().toString());
+            if(opcao == JOptionPane.YES_OPTION){
+                preencheQuarto();
+                JOptionPane.showMessageDialog(null, "Locação finalizada com sucesso!", "Concluído!",
+                JOptionPane.INFORMATION_MESSAGE);
+                limpar();
+            }
+        }catch(NullPointerException e){
+            JOptionPane.showMessageDialog(null, "Selecione um tipo e um número disponível!", "Atenção!",
+            JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btLocarActionPerformed
 
     private void tfDataLocacaoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfDataLocacaoMouseExited
-        preencheSaida();
-        preencheQuarto();
-        tfValorLocacao.setText(Double.toString(quarto.calculaValor()));
+        try{
+            preencheSaida();
+            preencheQuarto();
+            tfValorLocacao.setText(Double.toString(quarto.calculaValor()));
+        }catch(NullPointerException e){}
     }//GEN-LAST:event_tfDataLocacaoMouseExited
 
     private void tfDiasLocadosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tfDiasLocadosMouseExited
-        preencheSaida();
-        preencheQuarto();
-        tfValorLocacao.setText(Double.toString(quarto.calculaValor()));
+        try{
+            preencheSaida();
+            preencheQuarto();
+            tfValorLocacao.setText(Double.toString(quarto.calculaValor()));
+        }catch(NullPointerException e){}
     }//GEN-LAST:event_tfDiasLocadosMouseExited
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
